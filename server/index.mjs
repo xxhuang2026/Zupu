@@ -9,7 +9,7 @@ if (forceHttps && !origin.startsWith("https://"))
   throw new Error("已启用 FORCE_HTTPS，APP_ORIGIN 必须使用 HTTPS");
 
 const db = await createPool(
-  process.env.DATABASE_URL || "file:/app/data/zupu.sqlite",
+  process.env.DATABASE_URL || "sqlite:./data/zupu.sqlite",
 );
 await migrate(db);
 
@@ -38,7 +38,7 @@ const app = createApp(db, {
   distDir: path.resolve("dist"),
 });
 const server = app.listen(Number(process.env.PORT || 3000), "0.0.0.0", () =>
-  console.log("族谱应用已启动"),
+  console.log("族谱应用已启动http://127.0.0.1:3000"),
 );
 server.requestTimeout = 5 * 60 * 1000;
 const trashCleanup = setInterval(

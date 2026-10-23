@@ -2,6 +2,7 @@ import { DatabaseSync, backup as sqliteBackup } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { hashPassword } from "./auth.mjs";
 
 const jsonColumns = new Set(["data", "branches", "before_data", "after_data"]);
@@ -218,7 +219,7 @@ class SQLitePool {
 }
 
 function sqliteFilename(url) {
-  if (url.startsWith("file:")) return new URL(url).pathname;
+  if (url.startsWith("file:")) return fileURLToPath(url);
   const filename = url.slice("sqlite:".length);
   return path.resolve(filename || "data/zupu.sqlite");
 }
